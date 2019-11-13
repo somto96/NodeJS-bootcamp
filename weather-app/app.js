@@ -1,4 +1,9 @@
 // const request = require('request');
+
+/**
+ * Author: Somtochukwu Ezerioha
+ * To insert location type this in your command line. Example: node app.js Lagos
+ */
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 const address = process.argv[2]
