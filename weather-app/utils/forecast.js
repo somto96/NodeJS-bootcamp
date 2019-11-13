@@ -4,16 +4,16 @@ const forecast = (lat, long, callback) => {
     var url = `https://api.darksky.net/forecast/3bdd434415b8c7c870aa139be8feed37/${encodeURIComponent(lat)}, ${encodeURIComponent(long)}`
 
     request({
-        url: url,
+        url,
         json: true
-    }, (error, response) => {
+    }, (error, {body}) => {
         if(error){
             callback('Can\'t connect to weather services', undefined);
-        }else if (response.body.error){
+        }else if (body.error){
             callback('Invalid coordinates!', undefined);
         }else{
-            callback(undefined, ` It is currently ${response.body.currently.temperature} degrees out here in ${response.body.timezone}.
-            There is a ${response.body.currently.precipProbability}% chance of rain`)
+            callback(undefined, ` ${body.currently.summary}. It is currently ${body.currently.temperature} degrees out here in ${body.timezone}.
+            There is a ${body.currently.precipProbability}% chance of rain`)
         };
        
     })

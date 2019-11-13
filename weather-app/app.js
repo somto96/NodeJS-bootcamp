@@ -1,13 +1,23 @@
-const request = require('request');
+// const request = require('request');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
+const address = process.argv[2]
 
-forecast(3, 4, (error, response) => {
-    console.log('Error: ', error);
-    console.log('Result: ', response);
-})
+if (!address) {
+    console.log("Please enter an address.")
+} else {
+    geocode(address, (error, { latitude, longitude, Location:location }) => {
 
-geocode("Lagos", (error, response) => {
-    console.log('Error: ', error);
-    console.log('Data: ', response);
-})
+        if (error) {
+            return console.log(error);
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                return console.log('Error: ', error);
+            }
+            console.log('Location: ', location);
+            console.log('Forecast: ', forecastData);
+        })
+    })
+}
