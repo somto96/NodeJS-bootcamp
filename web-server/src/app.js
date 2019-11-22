@@ -3,7 +3,9 @@
  */
 const path = require('path')
 const express = require('express');
-const hbs = require('hbs')
+const hbs = require('hbs');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -23,13 +25,15 @@ app.use(express.static(publicDir));
 
 app.get('', (req, res) => {
     res.render('index', {
-        title: 'Weather App',
+        icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
+        title: 'Weather',
         name: "Somto Ezerioha @ 2019"
     });
 });
 
 app.get('/about', (req, res) => {
     res.render('about', {
+        icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
         title: 'About me',
         name: 'Somto Ezerioha @ 2019',
         description: "Hi, I'm Somtochukwu Ezerioha. A full stack-developer with over 3 years of experience."
@@ -38,21 +42,51 @@ app.get('/about', (req, res) => {
 
 app.get('/help', (req, res) => {
     res.render('help', {
-        title: 'This is our help page',
+        icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
+        title: 'Help',
         name: 'Somto Ezerioha @ 2019',
         description: "Oops! this page is still under construction. Check back later."
     });
 });
 
 app.get('/weather', (req, res) => {
-    res.send({
-        forecast: 'Sunny',
-        location: 'Lagos/Nigeria '
-    });
+    if (!req.query.address) {
+        return res.send({
+            error: "You have to provide an address"
+        })
+    }
+    geocode(req.query.address, (error, {
+        latitude,
+        longitude,
+        Location: location
+    } = {}) => {
+
+        if (error) {
+            return res.send({
+                error
+            });
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                return res.send({
+                    error
+                });
+            }
+            res.send({
+                address: req.query.address,
+                location,
+                forecast: forecastData,
+
+            });
+
+        })
+    })
 });
 
 app.get('/help/*', (req, res) => {
     res.render('404', {
+        icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
         title: '404',
         text: "Help article not found",
         name: 'Somto Ezerioha @ 2019'
@@ -61,6 +95,7 @@ app.get('/help/*', (req, res) => {
 
 app.get('*', (req, res) => {
     res.render('404', {
+        icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
         title: '404',
         text: "Page not found",
         name: 'Somto Ezerioha @ 2019'
