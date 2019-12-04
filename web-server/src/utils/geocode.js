@@ -6,8 +6,12 @@ const geocode = (address, callback) => {
         url,
         json: true
     }, (error, {body}) => {
+
+        // Error handling for irregular network connection i.e poor internet connection
         if (error) {
             callback('Unable to connect to location services', undefined);
+        
+        // Error handling for invalid addresses or location
         } else if (body.features.length === 0) {
             callback('Invalid search term. Please use another search term', undefined);
         } else {

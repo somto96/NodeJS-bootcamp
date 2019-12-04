@@ -36,7 +36,7 @@ app.get('/about', (req, res) => {
         icon: ' <link rel="icon" href="./img/weather.png" type="image/x-icon">',
         title: 'About me',
         name: 'Somto Ezerioha @ 2019',
-        description: "Hi, I'm Somtochukwu Ezerioha. A full stack-developer with over 3 years of experience."
+        description: "Hi, I'm Somtochukwu Ezerioha. A full stack-developer with 2 years of experience."
     });
 });
 
