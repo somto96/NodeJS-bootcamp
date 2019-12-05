@@ -12,6 +12,26 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
 
     const db = client.db(databaseName);
 
+    db.collection('tasks').deleteOne({
+        description: 'Laundry and house-keeping'
+    }).then((result)=>{
+        console.log(result.deletedCount);
+    }).catch((error)=>{
+        console.log(error);
+    })
+
+    // db.collection('tasks').updateMany({
+    //     completed: false
+    // },{
+    //     $set: {
+    //         completed: true
+    //     }
+    // }).then((result)=>{  // Promise is returned since no callback is passed   
+    //     console.log(result);
+    // }).catch((error)=>{
+    //     console.log(error);
+    // })
+
     // console.log('connected')
 
     // db.collection('tasks').findOne({_id: new ObjectID("5de7c54660086c2979bd4343") }, (error, task) => {
@@ -23,9 +43,9 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)
         
     // })
 
-    db.collection('tasks').find({completed: false}).toArray((error, tasks) => {
-        console.log(tasks);
-    })
+    // db.collection('tasks').find({completed: false}).toArray((error, tasks) => {
+    //     console.log(tasks);
+    // })
 
     // db.collection('tasks').insertMany([
     //     {
