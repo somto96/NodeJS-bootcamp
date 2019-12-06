@@ -5,7 +5,7 @@ const connectionURL = 'mongodb://localhost:27017';
 
 const databaseName = 'task-manager';
 
-MongoClient.connect(connectionURL, { useUnifiedTopology: true }, (error, client)=> {
+MongoClient.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: true }, (error, client)=> {
     if(error){
         return console.log('Unable to connect to database');
     }
