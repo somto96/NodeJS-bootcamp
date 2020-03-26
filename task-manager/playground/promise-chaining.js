@@ -16,11 +16,23 @@ const Task = require('../src/models/task');
 //     console.log(e);
 // })
 
-Task.findByIdAndUpdate('5df2635fca85fd0a4e94e1e5', {completed: true}).then((task) => {
-    console.log(task);
-    return Task.countDocuments({completed: true});
-}).then((result) => {
-    console.log(result);
+const updateAgeandCount = async (id, age) => {
+    const user =  await User.findByIdAndUpdate(id, { age });
+    const count = await User.countDocuments({ age });
+    return count;
+}
+
+updateAgeandCount('5df0f1915633f66311e078e5', 2).then((count) => {
+    console.log('Number of users who are 2 years old: ', count);
 }).catch((e) => {
     console.log(e);
 })
+
+// Task.findByIdAndUpdate('5df2635fca85fd0a4e94e1e5', {completed: true}).then((task) => {
+//     console.log(task);
+//     return Task.countDocuments({completed: true});
+// }).then((result) => {
+//     console.log(result);
+// }).catch((e) => {
+//     console.log(e);
+// })
